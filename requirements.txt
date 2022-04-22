@@ -3,9 +3,6 @@ admin==0.0.1
 aiohttp==3.8.1
 aiosignal==1.2.0
 alabaster==0.7.12
-anaconda-client==1.7.2
-anaconda-navigator==1.9.7
-anaconda-project==0.8.3
 aplus==0.11.0
 appdirs==1.4.4
 argcomplete==1.12.3
