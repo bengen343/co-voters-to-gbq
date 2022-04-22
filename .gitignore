@@ -59,6 +59,3 @@ Thumbs.db
 *.bat
 *.env
 
-# Other
-config.py
-
