@@ -26,4 +26,4 @@ def create_bq_schema(_df):
 
 
 def save_to_bq(_df, bq_table_schema, table_id=bq_table_id, project_id=bq_project_id ):
-    _df.to_gbq(destination_table=table_id, project_id=project_id, if_exists='replace', table_schema=bq_table_schema, progress_bar=True, credentials=bq_credentials)
+    _df.to_gbq(destination_table=table_id, project_id=project_id, if_exists='replace', table_schema=bq_table_schema, credentials=bq_credentials)

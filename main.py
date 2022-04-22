@@ -27,6 +27,10 @@ def main():
                 
     print("Building schema")
     bq_schema_list = save_to_bq.create_bq_schema(_df=voter_file_df)
+
+    print(bq_schema_list)
+    print(list(voter_file_df))
+
     print("Uploading to BigQuery")
     save_to_bq.save_to_bq(_df=voter_file_df, bq_table_schema=bq_schema_list, table_id=bq_table_id, project_id=bq_project_id)
 
