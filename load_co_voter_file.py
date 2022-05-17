@@ -23,7 +23,7 @@ def load_co_voter_file():
     _list = []
     
     for file in files_list:
-        _df = pd.read_csv(file, sep=",", encoding='utf-8', index_col=None, header=0, low_memory=False, error_bad_lines=False)
+        _df = pd.read_csv(file, sep=",", encoding='cp437', index_col=None, header=0, low_memory=False, error_bad_lines=False)
         _list.append(_df)
     
     voter_file_df = pd.concat(_list)
