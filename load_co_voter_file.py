@@ -28,6 +28,7 @@ def load_co_voter_file():
     
     voter_file_df = pd.concat(_list)
     voter_file_df.reset_index(drop=True, inplace=True)
+    voter_file_df['VOTER_ID'] =  _df['VOTER_ID'].astype('float').astype('int64').astype('str')
     del voter_file_df['backcall==0.2.0']
 
     return voter_file_df
