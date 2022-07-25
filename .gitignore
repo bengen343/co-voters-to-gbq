@@ -53,6 +53,7 @@ Thumbs.db
 
 # Large files
 *.csv
+*.zip
 
 # Secrets files
 *.json
