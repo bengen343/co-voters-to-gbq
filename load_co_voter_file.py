@@ -32,3 +32,23 @@ def load_co_voter_file():
     voter_file_df['VOTER_ID'] =  voter_file_df['VOTER_ID'].astype('float').astype('int64').astype('str')
 
     return voter_file_df
+
+# Load vote history dataframe with elections of interest
+def vote_history_to_df(bq_query_str=bq_history_str):
+    _df = pd.read_gbq(bq_query_str, project_id=bq_project_id, location=bq_project_location, credentials=bq_credentials, progress_bar_type='tqdm')
+    print(f"Total Vote History Records: {len(_df):.0f}")
+
+    # Collapse history into single binary row
+    _df = pd.get_dummies(_df.set_index('VOTER_ID')['ELECTION_DATE'])
+    _df = _df.reset_index().groupby('VOTER_ID').sum()
+    _df.reset_index(level=0, inplace=True)
+
+    # Fix VOTER_ID datatype
+    _df['VOTER_ID'] = _df['VOTER_ID'].astype('int64')
+
+    # Reset column headings to strings
+    columns_lst = list(_df)
+    columns_lst = ['VOTER_ID'] + [x.date().strftime('%Y-%m-%d') for x in columns_lst[1:]]
+    _df.columns = columns_lst
+
+    return _df

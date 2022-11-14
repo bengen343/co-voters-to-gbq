@@ -52,7 +52,6 @@ Thumbs.db
 *.wmv
 
 # Large files
-*.csv
 *.zip
 
 # Secrets files

@@ -6,6 +6,7 @@ from flask import Flask
 import load_co_voter_file
 import save_to_bq
 import sos_fetch
+import transform_co_returns
 from config import *
 
 app = Flask(__name__)
@@ -17,6 +18,17 @@ def main():
     load_co_voter_file.extract_co_voter_file()
     print("Loading voter file")
     voter_file_df = load_co_voter_file.load_co_voter_file()
+
+    print("Loading vote history.")
+    vote_history_df = vote_history_to_df(bq_query_str=bq_history_str)
+
+    # Match the various data sources together
+    voter_file_df = pd.merge(voter_file_df, vote_history_df, how='left', on='VOTER_ID')
+
+    # Augment the voter registration data with additional demographic information
+    voter_file_df = calc_pv(voter_file_df, generals_lst=generals_lst, primaries_lst=primaries_lst)
+    voter_file_df = calc_age(voter_file_df)
+    voter_file_df = calc_race(voter_file_df)
 
     print("Setting column datatypes")
     for column in list(voter_file_df):
