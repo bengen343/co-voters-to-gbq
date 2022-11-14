@@ -25,6 +25,7 @@ def main():
     # Match the various data sources together
     voter_file_df = pd.merge(voter_file_df, vote_history_df, how='left', on='VOTER_ID')
 
+    print("Calculating additional data fields.")
     # Augment the voter registration data with additional demographic information
     voter_file_df = calc_pv(voter_file_df, generals_lst=generals_lst, primaries_lst=primaries_lst)
     voter_file_df = calc_age(voter_file_df)

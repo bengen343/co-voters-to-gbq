@@ -11,7 +11,7 @@ COPY requirements.txt requirements.txt
 
 RUN pip3 install -r requirements.txt
 
-COPY config.py main.py sos_fetch.py load_co_voter_file.py save_to_bq.py ./
+COPY config.py main.py sos_fetch.py load_co_voter_file.py save_to_bq.py transform_co_returns.py Names_2010Census.csv ./
 
 # CMD [ "python3", "./main.py" ]
 # Run the web service on container startup. Here we use the gunicorn
