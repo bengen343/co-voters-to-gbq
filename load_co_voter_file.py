@@ -29,7 +29,7 @@ def load_co_voter_file():
     
     voter_file_df = pd.concat(_list)
     voter_file_df.reset_index(drop=True, inplace=True)
-    voter_file_df['VOTER_ID'] =  voter_file_df['VOTER_ID'].astype('float').astype('int64').astype('str')
+    voter_file_df['VOTER_ID'] =  voter_file_df['VOTER_ID'].astype('float').astype('int64')
 
     return voter_file_df
 
