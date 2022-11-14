@@ -22,6 +22,7 @@ election_str = election_str[4:]
 
 # BQ Variables
 bq_project_id = os.environ.get('BQ_PROJECT_ID')
+bq_project_location = 'us-west1'
 
 bq_table_stem = bq_project_id + '.co_voterfile.'
 bq_table_id = bq_table_stem + 'voters_' +str(date.today().year) + f"{(date.today().month - 1):02d}" + '01'
