@@ -24,7 +24,7 @@ election_str = election_str[4:]
 bq_project_id = os.environ.get('BQ_PROJECT_ID')
 bq_project_location = 'us-west1'
 bq_dataset_name = 'co_voterfile'
-bq_table_name = f'{str((date.today() + timedelta(-30)).year)}{((date.today() + timedelta(-30)).month):02d}01'
+bq_table_name = f'voters_{str((date.today() + timedelta(-30)).year)}{((date.today() + timedelta(-30)).month):02d}01'
 bq_table_id = f'{bq_project_id}.{bq_dataset_name}.{bq_table_name}'
 
 bq_history_str = '''
