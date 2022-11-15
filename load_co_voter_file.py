@@ -17,26 +17,35 @@ def extract_co_voter_file():
 
 
 def load_co_voter_file():
-    files_list = os.listdir()
-    files_list = [file for file in files_list if 'voters' in file.lower()]
+    files_lst = os.listdir()
+    files_lst = [file for file in files_lst if 'voters' in file.lower()]
     _df = pd.DataFrame()
-    _list = []
+    _lst = []
     
-    for file in files_list:
+    for file in files_lst:
         print(f"Loading file: {file}")
         _df = pd.read_csv(file, sep=",", encoding='cp437', index_col=None, header=0, low_memory=False, error_bad_lines=False)
-        _list.append(_df)
+        _lst.append(_df)
     
-    voter_file_df = pd.concat(_list)
+    voter_file_df = pd.concat(_lst)
     voter_file_df.reset_index(drop=True, inplace=True)
-    voter_file_df['VOTER_ID'] =  voter_file_df['VOTER_ID'].astype('float').astype('int64')
 
+    for column in list(voter_file_df):
+        if 'date' in column.lower():
+            voter_file_df[column] = pd.to_datetime(voter_file_df[column], errors='coerce')
+        elif column in integer_col_lst:
+            voter_file_df[column] = voter_file_df[column].astype('float64').astype('Int64')
+        else:
+            voter_file_df[column] = voter_file_df[column].astype('str')
+
+    print(f"Total Voters Loaded: {len(voter_file_df):,.0f}")
     return voter_file_df
+
 
 # Load vote history dataframe with elections of interest
 def vote_history_to_df(bq_query_str=bq_history_str):
-    _df = pd.read_gbq(bq_query_str, project_id=bq_project_id, location=bq_project_location, credentials=bq_credentials, progress_bar_type='tqdm')
-    print(f"Total Vote History Records: {len(_df):.0f}")
+    _df = pd.read_gbq(bq_query_str, project_id=bq_project_name, location=bq_project_location, credentials=bq_credentials, progress_bar_type='tqdm')
+    print(f"Total Vote History Records: {len(_df):,.0f}")
 
     # Collapse history into single binary row
     _df = pd.get_dummies(_df.set_index('VOTER_ID')['ELECTION_DATE'])

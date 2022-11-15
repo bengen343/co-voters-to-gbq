@@ -8,8 +8,10 @@ from config import *
 def create_bq_schema(_df):
     schema_list = []
     for column in list(_df):
-        if 'DATE' in column:
-            sql_type = 'DATETIME'
+        if 'date' in column.lower():
+            sql_type = 'DATE'
+        elif column in integer_col_lst:
+            sql_type = 'INT64'
         else:
             sql_type = 'STRING'
                 
@@ -23,7 +25,5 @@ def create_bq_schema(_df):
     return schema_list
 
 
-
-
-def save_to_bq(_df, bq_table_schema, table_id=bq_table_id, project_id=bq_project_id ):
+def save_to_bq(_df, bq_table_schema, table_id, project_id=bq_project_name):
     _df.to_gbq(destination_table=table_id, project_id=project_id, if_exists='replace', table_schema=bq_table_schema, credentials=bq_credentials)

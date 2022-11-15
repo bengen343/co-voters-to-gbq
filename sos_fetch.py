@@ -13,7 +13,7 @@ def _new_makepasv(self):
     host = self.sock.getpeername()[0]
     return host,port
 
-def sos_fetch():
+def sos_dir_fetch():
     FTP_TLS.makepasv = _new_makepasv
     
     ftps = FTP_TLS()
@@ -31,4 +31,3 @@ def sos_fetch():
             local_file.close()
             
     ftps.quit()
-

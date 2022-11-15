@@ -21,11 +21,11 @@ election_str = election_str + '\''
 election_str = election_str[4:]
 
 # BQ Variables
-bq_project_id = os.environ.get('BQ_PROJECT_ID')
+bq_project_name = os.environ.get('BQ_PROJECT_ID')
 bq_project_location = 'us-west1'
 bq_dataset_name = 'co_voterfile'
-bq_table_name = f'voters_{str((date.today() + timedelta(-30)).year)}{((date.today() + timedelta(-30)).month):02d}01'
-bq_table_id = f'{bq_project_id}.{bq_dataset_name}.{bq_table_name}'
+bq_voters_table_name = f'voters_{str((date.today() + timedelta(-30)).year)}{((date.today() + timedelta(-30)).month):02d}01'
+bq_voters_table_id = f'{bq_project_name}.{bq_dataset_name}.{bq_voters_table_name}'
 
 bq_history_str = '''
 SELECT *
@@ -36,3 +36,19 @@ WHERE ELECTION_DATE IN (''' + election_str + ''')
 # Establish BigQuery credentials
 bq_account_creds = json.loads(os.environ.get('BQ_ACCOUNT_CREDS'))
 bq_credentials = service_account.Credentials.from_service_account_info(bq_account_creds)
+
+# Data type variables
+integer_col_lst = [
+    'VOTER_ID',
+    'COUNTY_CODE',
+    'PRECINCT_NAME',
+    'ADDRESS_LIBRARY_ID',
+    'HOUSE_NUM',
+    'RESIDENTIAL_ZIP_CODE',
+    'RESIDENTIAL_ZIP_PLUS',
+    'BIRTH_YEAR',
+    'PRECINCT',
+    'VOTER_STATUS_ID',
+    'MAILING_ZIP_CODE',
+    'MAILING_ZIP_PLUS'
+]

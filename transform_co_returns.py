@@ -1,15 +1,16 @@
-from config import *
-import pandas as pd
-import numpy as np
 from datetime import datetime
+
+import numpy as np
+import pandas as pd
+
+from config import *
+
 
 #Calculate PVG scores for all voters in a dataframe
 def calc_pv(_df, generals_lst=generals_lst, primaries_lst=primaries_lst):
     print("Calculating PVG & PVP values")
 
     # Clean data - fix date formatting, add new columnts
-    _df['REGISTRATION_DATE'] = pd.to_datetime(_df['REGISTRATION_DATE'], exact=False, errors='coerce')
-
     _df['PVG'] = 0
     _df['PVG'] = 0
 
@@ -28,8 +29,8 @@ def calc_pv(_df, generals_lst=generals_lst, primaries_lst=primaries_lst):
     # Clean and reformat the voter score results
     _df[['PVG', 'PVP']].fillna(0, inplace=True)
     
-    _df['PVG'] = 'PVG' + _df['PVG'].astype('str')
-    _df['PVP'] = 'PVP' + _df['PVP'].astype('str')
+    _df['PVG'] = 'PVG' + _df['PVG'].astype('Int64').astype('str')
+    _df['PVP'] = 'PVP' + _df['PVP'].astype('Int64').astype('str')
 
     return _df
 
@@ -53,7 +54,7 @@ def calc_race(_df):
     
     # Import Census Surname List
     surnames_df = pd.DataFrame()
-    surnames_df = pd.read_csv('Names_2010Census.csv', sep=',', encoding='cp437',index_col=None, header=0, low_memory=False)
+    surnames_df = pd.read_csv('Names_2010Census.csv', sep=',', encoding='cp437', index_col=None, header=0, low_memory=False)
 
     # Convert percentages from strings to numbers
     surnames_df['pctwhite'] = pd.to_numeric(surnames_df['pctwhite'], errors='coerce')
