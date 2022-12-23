@@ -92,7 +92,14 @@ def main():
         voter_file_df.to_gbq(destination_table=bq_new_voters_table_id, project_id=bq_project_name, if_exists='replace', table_schema=bq_schema_lst, credentials=bq_credentials)
 
         # Compose a SQL Query to compare the new and incremental tables and sunset the incremental records that have changed.
-        print("Sunsetting existing records that have changed...")
+        bq_sunset_query_str = f'''
+        SELECT
+            COUNT(VOTER_ID)
+        WHERE (VOTER_ID IN (SELECT VOTER_ID FROM (SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_voters_table_id}` WHERE VALID_TO_DATE IS NULL EXCEPT DISTINCT SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_new_voters_table_id}`))) AND VALID_TO_DATE IS NULL
+        '''
+        bq_result = bq_client.query(bq_sunset_query_str)
+        print(f"Sunsetting {next(bq_result.result())[0]:,.0f} existing records that have changed...")
+        
         bq_sunset_query_str = f'''
         UPDATE `{bq_voters_table_id}`
         SET VALID_TO_DATE = DATE(EXTRACT(YEAR FROM CURRENT_DATE()), EXTRACT(MONTH FROM CURRENT_DATE()), 1)
@@ -103,7 +110,15 @@ def main():
         time.sleep(120)
 
         # Compose a SQL Query to compare the new and incremental tables and add the new records.
-        print("Adding new records to table...")
+        bq_add_query_str = f'''
+        SELECT
+            COUNT(updated.VOTER_ID)
+        FROM ((SELECT VOTER_ID FROM (SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_new_voters_table_id}` EXCEPT DISTINCT SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_voters_table_id}` WHERE VALID_TO_DATE IS NULL)) AS ids
+        LEFT JOIN `{bq_new_voters_table_id}` AS updated ON ids.VOTER_ID=updated.VOTER_ID)
+        '''
+        bq_result = bq_client.query(bq_sunset_query_str)
+        print(f"Adding {next(bq_result.result())[0]:,.0f} new records to table...")
+        
         bq_add_query_str = f'''
         INSERT `{bq_voters_table_id}`
         SELECT
