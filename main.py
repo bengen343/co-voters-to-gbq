@@ -95,6 +95,7 @@ def main():
         bq_sunset_query_str = f'''
         SELECT
             COUNT(VOTER_ID)
+        FROM `{bq_voters_table_id}`
         WHERE (VOTER_ID IN (SELECT VOTER_ID FROM (SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_voters_table_id}` WHERE VALID_TO_DATE IS NULL EXCEPT DISTINCT SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_new_voters_table_id}`))) AND VALID_TO_DATE IS NULL
         '''
         bq_result = bq_client.query(bq_sunset_query_str)
