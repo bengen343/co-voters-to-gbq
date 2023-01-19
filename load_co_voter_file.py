@@ -20,7 +20,7 @@ def extract_co_voter_file():
             os.remove(file)
 
 
-def load_co_voter_file(integer_col_lst):
+def load_co_voter_file(integer_col_lst, float_col_lst):
     print("Loading constituent files to dataframe...")
     files_lst = os.listdir()
     files_lst = [file for file in files_lst if 'registered_voters' in file.lower()]
@@ -36,7 +36,7 @@ def load_co_voter_file(integer_col_lst):
     voter_file_df = voter_file_df[~voter_file_df['VOTER_ID'].isna()]
     voter_file_df.reset_index(drop=True, inplace=True)
 
-    voter_file_df = set_dtypes_on(voter_file_df, voters_integer_cols_lst)
+    voter_file_df = set_dtypes_on(voter_file_df, voters_integer_cols_lst, voters_float_cols_lst)
 
     print(f"Total Voters Loaded: {len(voter_file_df):,.0f}")
     

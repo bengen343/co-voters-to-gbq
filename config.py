@@ -60,3 +60,7 @@ voters_integer_cols_lst = [
     'MAILING_ZIP_CODE',
     'MAILING_ZIP_PLUS'
 ]
+
+voters_float_cols_lst = [
+    'SPL_ID'
+]

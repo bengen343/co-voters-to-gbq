@@ -7,7 +7,7 @@ import pandas as pd
 from config import *
 
 
-def set_dtypes_on(df: pd.DataFrame, integer_col_lst: list) -> pd.DataFrame:
+def set_dtypes_on(df: pd.DataFrame, integer_col_lst: list, float_col_lst: list) -> pd.DataFrame:
     print("Setting data types...")
     for column in list(df):
         if 'date' in column.lower():
@@ -15,6 +15,10 @@ def set_dtypes_on(df: pd.DataFrame, integer_col_lst: list) -> pd.DataFrame:
         elif column in integer_col_lst:
             df[column] = pd.to_numeric(df[column], errors='coerce')
             df[column] = df[column].astype('float64').astype('Int64')
+        elif column in float_col_lst:
+            df[column] = pd.to_numeric(df[column], errors='coerce')
+            df[column] = df[column].astype('float64')
+            df[column] = df[column].astype('str')
         else:
             df[column] = df[column].astype('str')
             

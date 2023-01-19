@@ -25,7 +25,7 @@ def main():
     extract_co_voter_file()
 
     # Load voter list files into dataframe.
-    voter_file_df = load_co_voter_file(voters_integer_cols_lst)
+    voter_file_df = load_co_voter_file(voters_integer_cols_lst, voters_float_cols_lst)
 
     # Set the list of columns that will ultimately be uploaded to BigQuery.
     # This is all of the columns in the original file as well as those we're adding.
@@ -117,7 +117,7 @@ def main():
         FROM ((SELECT VOTER_ID FROM (SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_new_voters_table_id}` EXCEPT DISTINCT SELECT * EXCEPT(VALID_FROM_DATE, VALID_TO_DATE) FROM `{bq_voters_table_id}` WHERE VALID_TO_DATE IS NULL)) AS ids
         LEFT JOIN `{bq_new_voters_table_id}` AS updated ON ids.VOTER_ID=updated.VOTER_ID)
         '''
-        bq_result = bq_client.query(bq_sunset_query_str)
+        bq_result = bq_client.query(bq_add_query_str)
         print(f"Adding {next(bq_result.result())[0]:,.0f} new records to table...")
         
         bq_add_query_str = f'''
