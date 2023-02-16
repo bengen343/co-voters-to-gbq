@@ -71,6 +71,9 @@ git clone https://github.com/bengen343/co-voters-to-gbq.git
 
 6. Install the required dependencies by running `pip install -r requirements.txt`
 
+## Deployment <a name = "deployment>
+
+This repository is meant to be run as a Google Cloud Run Service. Later it will be converted to a Google Cloud Run Job. At present, the Colorado Secretary of State FTP server only allows connections from whitelisted IP addresses. As such, the Google Cloud Run service needs to carry a dedicated IP address as outlined in this Goolge guide: https://cloud.google.com/run/docs/configuring/static-outbound-ip
 
 ## Built Using <a name = "built_using"></a>
 
