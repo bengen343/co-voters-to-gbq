@@ -5,6 +5,7 @@ import pandas as pd
 from flask import Flask
 from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
+from requests import get
 
 from config import *
 from load_co_voter_file import (extract_co_voter_file, load_co_voter_file,
@@ -17,6 +18,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
+    # Display the public IP address of this service for formatting.
+    ip = get('https://api.ipify.org').content.decode('utf8')
+    print(f"My public IP address is: {ip}")
+
     # Download all the files that make up the master voter list from
     # the Colorado Secretary of State FTP.
     sos_dir_fetch(ftp_user, ftp_pass, ftp_address, ftp_directory)
