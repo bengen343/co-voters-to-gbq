@@ -22,7 +22,7 @@ def sos_dir_fetch(ftp_user: str, ftp_pass: str, ftp_address: str, ftp_directory:
     ftps.cwd(ftp_directory)
     
     for file in ftps.nlst():
-        if 'registered' in file.lower():
+        if 'ex-003_master_voter_list' in file.lower():
             print(f"Retrieving file {file}")
             local_file = open(file, 'wb')
             ftps.retrbinary('RETR ' + file, local_file.write)

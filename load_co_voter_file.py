@@ -23,7 +23,7 @@ def extract_co_voter_file():
 def load_co_voter_file(integer_col_lst, float_col_lst):
     print("Loading constituent files to dataframe...")
     files_lst = os.listdir()
-    files_lst = [file for file in files_lst if 'registered_voters' in file.lower()]
+    files_lst = [file for file in files_lst if 'ex-003_master_voter_list' in file.lower()]
     df = pd.DataFrame()
     lst = []
     

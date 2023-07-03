@@ -143,7 +143,7 @@ def main():
     # Remove voter file text files from drive.
     print("Cleaning up hard disk...")
     file_lst = os.listdir()
-    file_lst = [file for file in file_lst if '.txt' in file]
+    file_lst = [file for file in file_lst if 'ex-003' in file.lower()]
 
     for file in file_lst:
         os.remove(file)

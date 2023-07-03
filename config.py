@@ -10,7 +10,7 @@ from google.oauth2 import service_account
 ftp_user = os.environ.get('FTP_USER')
 ftp_pass = os.environ.get('FTP_PASS')
 ftp_address = 'ftps.sos.state.co.us'
-ftp_directory = r'/EX-003 Master Voter List'
+ftp_directory = r'/EX-003_Master_Voter_List' 
 
 # Voter file variables
 # Select elections of interest
